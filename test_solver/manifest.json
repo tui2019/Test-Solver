@@ -5,7 +5,9 @@
 
   "description": "This extension will solve the test for you.",
 
-  "icons": {},
+  "icons": {
+    "48": "icons/icon.png"
+  },
 
   "content_scripts": [
     {
