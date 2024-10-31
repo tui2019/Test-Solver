@@ -1,24 +1,23 @@
-// import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
-// import('https://esm.run/@google/generative-ai')
-//   .then(module => {
-//     const { GoogleGenerativeAI } = module;
-//   })
-
 // https://aistudio.google.com
-// Use VPN to generate API key
+// Use VPN to generate and use API key
 // https://ai.google.dev/gemini-api/docs/quickstart?lang=web
-const API_KEY = "insert_your_key_here";
+const API_KEY = "key_here";
 
 
 function get_ansers(question, answers) {
   alert("Question: " + question + "\nAnswers:\n" + answers.join("\n"));
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = "Write a story about a magic backpack.";
+  (async () => {
+    const { GoogleGenerativeAI } = await import("https://esm.run/@google/generative-ai");
 
-  const result = await model.generateContent(prompt);
-  alert(result.response.text());
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = "Write a story about a magic backpack.";
+
+    const result = await model.generateContent(prompt);
+    alert(result.response.text());
+  })();
 }
 
 
