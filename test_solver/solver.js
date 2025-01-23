@@ -1,6 +1,10 @@
 function handleResponse(response) {
-  var correct_answer = answers_HTML[response-1];
-  correct_answer.click();
+  const responseArray = response.split(", ").map(Number);
+  for (let i=0; i<responseArray.length;i++){
+    var correct_answer = answers_HTML[responseArray[i] -1];
+    correct_answer.click();
+  }
+  
 }
 
 function handleError(error) {
@@ -22,6 +26,10 @@ for (var i = 0; i < questions.length; i++) {
     for (var j = 0; j < this.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("nWQGrd").length; j++) {
       answers.push(this.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("nWQGrd")[j].getElementsByTagName("span")[0].innerText);
       answers_HTML.push(this.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("nWQGrd")[j].firstChild);
+    }
+    for (var j = 0; j < this.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("eBFwI").length; j++) {
+      answers.push(this.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("eBFwI")[j].getElementsByTagName("span")[0].innerText);
+      answers_HTML.push(this.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("eBFwI")[j].firstChild);
     }
     const ansers_request = browser.runtime.sendMessage({
       question: this.innerText,
