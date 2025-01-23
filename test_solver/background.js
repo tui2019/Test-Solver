@@ -17,11 +17,10 @@ async function get_answers(request, sender, sendResponse) {
     answers_str += request.answers[i];
   }
   var prompt_str = "Допоможи вирішити завдання та дай відповідь лише цифрою(1, 2, 3...): " + request.question + ". Варіанти відповідей: " + answers_str;
-      var result = await model.generateContent(prompt_str);
-      var responseText = await result.response.text();
-      // sendResponse({ response: responseText });
-    return responseText; // Indicate that sendResponse will be called asynchronously
-  }
+  var result = await model.generateContent(prompt_str);
+  var responseText = await result.response.text();
+  return responseText;
+}
 
 
 browser.runtime.onMessage.addListener(get_answers);
