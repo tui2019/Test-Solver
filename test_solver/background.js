@@ -1,7 +1,7 @@
 // https://aistudio.google.com
 // https://ai.google.dev/gemini-api/docs/quickstart?lang=web
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
-var genAI = new GoogleGenerativeAI("YOUR_API_KEY");
+var genAI = new GoogleGenerativeAI("Api Key");
 var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
 
@@ -16,11 +16,12 @@ async function get_answers(request, sender, sendResponse) {
     }
     answers_str += request.answers[i];
   }
-  var prompt_str = "Допоможи вирішити завдання та дай відповідь лише цифрою(1, 2, 3...): " + request.question + ". Варіанти відповідей: " + answers_str;
-  var result = await model.generateContent(prompt_str);
-  var responseText = await result.response.text();
-  return responseText;
-}
+  var prompt_str = "Допоможи вирішити завдання та дай відповідь лише цифрою(1, 2, 3...) можливі декілька правильних відповідей, без жодних інших слів: " + request.question + ". Варіанти відповідей: " + answers_str;
+      var result = await model.generateContent(prompt_str);
+      var responseText = await result.response.text();
+      // sendResponse({ response: responseText });
+    return responseText; // Indicate that sendResponse will be called asynchronously
+  }
 
 
 browser.runtime.onMessage.addListener(get_answers);
