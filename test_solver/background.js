@@ -1,14 +1,14 @@
 // https://aistudio.google.com
 // https://ai.google.dev/gemini-api/docs/quickstart?lang=web
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
-var genAI = new GoogleGenerativeAI("YOUR_API_KEY");
+var genAI = new GoogleGenerativeAI("AIzaSyC1IkIJTrsTZ4KMvlgevelsr6_7Q38E5qU");
 var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
 
 
 async function get_answers(request, sender, sendResponse) {
   if (request.answers == "text_question") {
-    var prompt_str = "Дай відповідь (слово без пояснееня, якщо можливо і розгорнута врідповідь, якщо ні): " + request.question;
+    var prompt_str = "Дай відповідь (якщо можливо-слово без пояснееня і розгорнута врідповідь, якщо ні): " + request.question;
     var result = await model.generateContent(prompt_str);
     var responseText = await result.response.text();
   } else {
