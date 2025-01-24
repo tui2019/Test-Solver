@@ -5,6 +5,11 @@ var genAI = new GoogleGenerativeAI(window.localStorage.getItem('userGAPI'));
 var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
 async function get_answers(request, sender, sendResponse) {
+  if (request.answers == "text_question") {
+    var prompt_str = "Дай відповідь (якщо можливо - одним словом): " + request.question;
+    var result = await model.generateContent(prompt_str);
+    var responseText = await result.response.text();
+  } else {
   var answers_str = "";
   for (var i = 0; i < request.answers.length; i++) {
     if (i == 0) {
@@ -14,10 +19,10 @@ async function get_answers(request, sender, sendResponse) {
     }
     answers_str += request.answers[i];
   }
-  var prompt_str = "Допоможи вирішити завдання та дай відповідь лише цифрою(1, 2, 3...): " + request.question + ". Варіанти відповідей: " + answers_str;
+  var prompt_str = "Допоможи вирішити завдання та дай відповідь лише цифрою(1, 2, 3...) можливі декілька правильних відповідей, без жодних інших слів: " + request.question + ". Варіанти відповідей: " + answers_str;
       var result = await model.generateContent(prompt_str);
       var responseText = await result.response.text();
-      // sendResponse({ response: responseText });
+  }
     return responseText; // Indicate that sendResponse will be called asynchronously
   }
 
