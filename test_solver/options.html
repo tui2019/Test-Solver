@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="background-color: rgba(22, 12, 61, 0.719);">
+        <header>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" 
+            rel="stylesheet" 
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" 
+            crossorigin="anonymous">
+        </header>
+        <div class="input-group mb-3">
+            <input type="text" id="APIKey" class="form-control body-color" placeholder="Your Gemini API" style="font-size: 22px;" aria-describedby="inpStatus">
+            <span class="input-group-text material-icons text-danger" style="font-size: 30px; width: 50px;" id="inpStatus"></span>   
+        </div>
+        <br>
+        <div id="optionInfo" style="display: inline;">
+            <a href="https://ai.google.dev/gemini-api/docs" class="text-info" style="font-size: 19px; display: inline;">Get a Gemini API key here</a>
+            <p class="text-light" style="font-size: 19px; display: inline;">. Paste it in the input bar above and wait for a few seconds for it to be submitted.</p>
+        </div>
+        <footer>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" 
+            crossorigin="anonymous"></script>
+            <script type="module" src="optionsProc.js"></script>
+        </footer>
+    </body>
+</html>

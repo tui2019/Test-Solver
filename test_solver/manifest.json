@@ -20,5 +20,10 @@
     "persistent": false,
     "type": "module"
   },
+  "options_ui":
+  {
+    "page":"options.html"
+  },
+  "permissions":["storage"],
   "content_security_policy": "script-src 'self' https://esm.run https://cdn.jsdelivr.net; object-src 'self'"
 }

@@ -1,10 +1,8 @@
 // https://aistudio.google.com
 // https://ai.google.dev/gemini-api/docs/quickstart?lang=web
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
-var genAI = new GoogleGenerativeAI("YOUR_API_KEY");
+var genAI = new GoogleGenerativeAI(window.localStorage.getItem('userGAPI'));
 var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
-
-
 
 async function get_answers(request, sender, sendResponse) {
   var answers_str = "";
