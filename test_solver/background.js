@@ -26,5 +26,4 @@ async function get_answers(request, sender, sendResponse) {
     return responseText; // Indicate that sendResponse will be called asynchronously
   }
 
-
 browser.runtime.onMessage.addListener(get_answers);
