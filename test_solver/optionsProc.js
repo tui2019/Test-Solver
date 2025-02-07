@@ -1,6 +1,5 @@
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
-//AIzaSyAROgSlBFNrNXstJX4g9OVPsYv8hhhJ5kg
 document.getElementById("APIKey").addEventListener("input", getAPIInput, true);
 let APIKey_input = document.getElementById("APIKey");
 let inputStatus = document.getElementById("inpStatus");
