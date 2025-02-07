@@ -26,7 +26,7 @@ for (var i = 0; i < questions.length; i++) {
   var question = questions[i];
   var questionText = question.getElementsByClassName("M7eMe")[0];
 
-  questionText.ondblclick = function () {
+  questionText.onclick = function () {
     answers_HTML = [];
     answers = [];
     for (var j = 0; j < this.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("nWQGrd").length; j++) {
