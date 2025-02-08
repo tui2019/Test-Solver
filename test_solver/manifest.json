@@ -11,8 +11,15 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.docs.google.com/*", "*://*.naurok.ua/test/testing/*", "*://*.naurok.com.ua/test/testing/*"],
-      "js": ["solver.js"]
+      "matches": [
+        "*://*.naurok.ua/test/testing/*",
+        "*://*.naurok.com.ua/test/testing/*"
+      ],
+      "js": ["solverNaurok.js"]
+    },
+    {
+      "matches": ["*://*.docs.google.com/*"],
+      "js": ["solverGoogle.js"]
     }
   ],
   "background": {
@@ -20,13 +27,12 @@
     "persistent": false,
     "type": "module"
   },
-  "options_ui":
-  {
-    "page":"options.html"
+  "options_ui": {
+    "page": "options.html"
   },
   "browser_action": {
-    "default_popup": "options.html" 
+    "default_popup": "options.html"
   },
-  "permissions":["storage"],
+  "permissions": ["storage"],
   "content_security_policy": "script-src 'self' https://esm.run https://cdn.jsdelivr.net; object-src 'self'"
 }
