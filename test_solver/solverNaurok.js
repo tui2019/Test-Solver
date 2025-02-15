@@ -1,15 +1,11 @@
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
 function handleResponse(response) {
-    if (answers=="text_question"){
-    answers_HTML.value=response;
-    answers_HTML.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-    else{
-      const responseArray = response.split(", ").map(Number);
-      for (let i=0; i<responseArray.length;i++){
-        var correct_answer = answers_HTML[responseArray[i]-1];
-        correct_answer.click();
-      }
-    }
+  var correct_answer = answers_HTML[response-1];
+  correct_answer.style.opacity = "0";
+  delay(1000).then(() => correct_answer.style.opacity = "1");
+
 }
 
 function handleError(error) {
@@ -25,7 +21,6 @@ var answers = [];
 var question_tab = document.getElementsByClassName("test-content-text")[0];
 question_tab.addEventListener("click", async ()=>
   {
-    console.log("click");
     var questionWrapper = document.getElementsByClassName("test-content-text-inner");
     var anwserWrapper = document.getElementsByClassName("test-options-grid");
     var questionContext = questionWrapper[0].children[0].innerText;
