@@ -34,6 +34,7 @@ question_tab.addEventListener("click", async ()=>
     const ansers_request = browser.runtime.sendMessage({
       question: questionContext,
       answers: anwserContext,
+      type: "single_choice_question"
     });
     ansers_request.then(handleResponse, handleError);
     await new Promise(t => setTimeout(t, 2000));
