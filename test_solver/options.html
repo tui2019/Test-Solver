@@ -1,29 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Gemini API Setup</title>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+            crossorigin="anonymous"
+        />
+        <style>
+            body {
+                background: linear-gradient(370deg, white, #ae94f9, #ae94f9);
+                background-size: 200% 200%;
+
+                -webkit-animation: AnimationName 30s ease infinite;
+                -moz-animation: AnimationName 30s ease infinite;
+                animation: AnimationName 30s ease infinite;
+                color: black; /* Set default text color to white for better visibility */
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                margin: 0;
+                padding: 20px;
+                font-family: sans-serif;
+            }
+
+            .main-content {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .input-group {
+                max-width: 500px;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .input-group-text {
+                width: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #APIKey {
+                font-size: 22px;
+                background-color: rgba(
+                    255,
+                    255,
+                    255,
+                    0.1
+                ); /* Slightly transparent white background */
+                border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
+                color: white;
+            }
+
+            #APIKey::placeholder {
+                color: rgba(255, 255, 255, 0.5); /* Placeholder color */
+            }
+
+            #optionInfo {
+                text-align: center;
+            }
+
+            .text-info {
+                color: #0dcaf0 !important;
+            }
+
+            footer {
+                text-align: center;
+                padding-top: 20px;
+            }
+        </style>
     </head>
-    <body style="background-color: rgba(22, 12, 61, 0.719);">
-        <header>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" 
-            rel="stylesheet" 
-            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" 
-            crossorigin="anonymous">
-        </header>
-        <div class="input-group mb-3">
-            <input type="text" id="APIKey" class="form-control body-color" placeholder="Your Gemini API" style="font-size: 22px;" aria-describedby="inpStatus">
-            <span class="input-group-text material-icons text-danger" style="font-size: 30px; width: 50px;" id="inpStatus"></span>   
-        </div>
-        <br>
-        <div id="optionInfo" style="display: inline;">
-            <a href="https://aistudio.google.com/apikey" class="text-info" style="font-size: 19px; display: inline;">Get a Gemini API key here</a>
-            <p class="text-light" style="font-size: 19px; display: inline;">. Paste it in the input bar above and wait for a few seconds for it to be submitted.</p>
-        </div>
+    <body>
+        <header></header>
+        <main class="main-content">
+            <div class="input-group mb-3">
+                <input
+                    type="text"
+                    id="APIKey"
+                    class="form-control"
+                    placeholder="Your Gemini API"
+                    aria-describedby="inpStatus"
+                />
+                <span
+                    class="input-group-text material-icons text-danger"
+                    id="inpStatus"
+                ></span>
+            </div>
+            <div id="optionInfo">
+                <a
+                    href="https://aistudio.google.com/apikey"
+                    class="text-info"
+                    style="font-size: 19px; display: inline"
+                    >Get a Gemini API key here</a
+                >
+                <p class="text-light" style="font-size: 19px; display: inline">
+                    Paste it in the input bar above and wait for a few seconds
+                    for it to be submitted.
+                </p>
+            </div>
+        </main>
         <footer>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" 
-            crossorigin="anonymous"></script>
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+                crossorigin="anonymous"
+            ></script>
             <script type="module" src="optionsProc.js"></script>
         </footer>
     </body>

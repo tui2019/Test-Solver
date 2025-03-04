@@ -11,7 +11,7 @@ async function getAPIInput()
     if(APIKey_input.value.length == 0)
     {
         inputStatus.innerHTML = null;
-        return;   
+        return;
     }
 
     const avalue =  APIKey_input.value;
@@ -21,7 +21,7 @@ async function getAPIInput()
     try
     {
         test = await tmodel.generateContent("Test");
-    } 
+    }
     catch(error)
     {
         showError();
@@ -37,7 +37,7 @@ function showError()
     inputStatus.innerHTML = "error";
     if(inputStatus.classList.contains("text-success"))
     {
-        
+
         inputStatus.classList.replace("text-success", "text-danger");
     }
 }
@@ -47,7 +47,7 @@ function obtainAPI(apiv)
 {
 
     window.localStorage.setItem('userGAPI', apiv);
-    browser.runtime.reload();
+    preserveOptions();
 }
 
 
