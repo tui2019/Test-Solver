@@ -16,13 +16,18 @@
         />
         <style>
             body {
-                background: linear-gradient(370deg, white, #ae94f9, #ae94f9);
-                background-size: 200% 200%;
+                background: black;
+                background-image: linear-gradient(
+                        rgba(208, 243, 204, 0.2) 0.1em,
+                        transparent 0.1em
+                    ),
+                    linear-gradient(
+                        90deg,
+                        rgba(208, 243, 204, 0.2) 0.1em,
+                        transparent 0.1em
+                    );
+                background-size: 3em 3em;
 
-                -webkit-animation: AnimationName 30s ease infinite;
-                -moz-animation: AnimationName 30s ease infinite;
-                animation: AnimationName 30s ease infinite;
-                color: black; /* Set default text color to white for better visibility */
                 display: flex;
                 flex-direction: column;
                 min-height: 100vh;
@@ -61,7 +66,9 @@
                     0.1
                 ); /* Slightly transparent white background */
                 border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
-                color: white;
+                color: rgb(150, 150, 150);
+                backdrop-filter: blur(3px);
+                -webkit-backdrop-filter: blur(3px);
             }
 
             #APIKey::placeholder {
@@ -73,7 +80,25 @@
             }
 
             .text-info {
-                color: #0dcaf0 !important;
+                color: #158757 !important;
+            }
+
+            .text-light {
+                color: #d0f3ce !important;
+            }
+
+            #inpStatus {
+                font-size: 22px;
+                background-color: rgba(
+                    255,
+                    255,
+                    255,
+                    0.1
+                ); /* Slightly transparent white background */
+                border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
+                color: white;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
             }
 
             footer {
