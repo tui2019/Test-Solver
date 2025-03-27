@@ -15,7 +15,7 @@ function handleResponse(response) {
     else if (type=="multiple_choice_question"){
       const responseArray = response.split(", ").map(Number);
       for (let i=0; i<responseArray.length;i++){
-        var correct_answer = answers_HTML[responseArray[i]];
+        var correct_answer = answers_HTML[responseArray[i]-1];
         correct_answer.click();
       }
     }
