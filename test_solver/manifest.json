@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Test Solver",
-  "version": "1.6",
+  "version": "1.6-experimental",
 
   "description": "This extension will solve the test for you.",
 
