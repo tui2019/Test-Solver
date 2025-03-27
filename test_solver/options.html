@@ -4,28 +4,12 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Gemini API Setup</title>
-        <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
-            crossorigin="anonymous"
-        />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
         <style>
             body {
                 background: black;
-                background-image: linear-gradient(
-                        rgba(208, 243, 204, 0.2) 0.1em,
-                        transparent 0.1em
-                    ),
-                    linear-gradient(
-                        90deg,
-                        rgba(208, 243, 204, 0.2) 0.1em,
-                        transparent 0.1em
-                    );
+                background-image: linear-gradient(rgba(208, 243, 204, 0.2) 0.1em, transparent 0.1em), linear-gradient(90deg, rgba(208, 243, 204, 0.2) 0.1em, transparent 0.1em);
                 background-size: 3em 3em;
 
                 display: flex;
@@ -59,12 +43,7 @@
 
             #APIKey {
                 font-size: 22px;
-                background-color: rgba(
-                    255,
-                    255,
-                    255,
-                    0.1
-                ); /* Slightly transparent white background */
+                background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
                 border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
                 color: rgb(150, 150, 150);
                 backdrop-filter: blur(3px);
@@ -89,12 +68,7 @@
 
             #inpStatus {
                 font-size: 22px;
-                background-color: rgba(
-                    255,
-                    255,
-                    255,
-                    0.1
-                ); /* Slightly transparent white background */
+                background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
                 border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
                 color: white;
                 backdrop-filter: blur(20px);
@@ -105,43 +79,98 @@
                 text-align: center;
                 padding-top: 20px;
             }
+
+            /* The switch - the box around the slider */
+            .switch {
+                position: relative;
+                display: block;
+                width: 60px;
+                height: 34px;
+            }
+
+            /* Hide default HTML checkbox */
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            /* The slider */
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            input:checked + .slider {
+                background-color: #158757;
+            }
+
+            input:focus + .slider {
+                box-shadow: 0 0 1px #158757;
+            }
+
+            input:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(26px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+                border-radius: 34px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+            .toggle-input {
+                display: flex;
+                margin-top: 30px;
+                justify-content: center;
+                align-items: center;
+            }
         </style>
     </head>
     <body>
         <header></header>
         <main class="main-content">
             <div class="input-group mb-3">
-                <input
-                    type="text"
-                    id="APIKey"
-                    class="form-control"
-                    placeholder="Your Gemini API"
-                    aria-describedby="inpStatus"
-                />
-                <span
-                    class="input-group-text material-icons text-danger"
-                    id="inpStatus"
-                ></span>
+                <input type="text" id="APIKey" class="form-control" placeholder="Your Gemini API" aria-describedby="inpStatus" />
+                <span class="input-group-text material-icons text-danger" id="inpStatus"></span>
             </div>
             <div id="optionInfo">
-                <a
-                    href="https://aistudio.google.com/apikey"
-                    class="text-info"
-                    style="font-size: 19px; display: inline"
-                    >Get a Gemini API key here</a
-                >
-                <p class="text-light" style="font-size: 19px; display: inline">
-                    Paste it in the input bar above and wait for a few seconds
-                    for it to be submitted.
-                </p>
+                <a href="https://aistudio.google.com/apikey" class="text-info" style="font-size: 19px; display: inline">Get a Gemini API key here</a>
+                <p class="text-light" style="font-size: 19px; display: inline">Paste it in the input bar above and wait for a few seconds for it to be submitted.</p>
+            </div>
+            <div class="toggle-input mb3">
+                <label class="switch">
+                    <input type="checkbox" id="exp_logic_enable" />
+                    <span class="slider round"></span>
+                </label>
+                <label class="text-light" style="font-size: 19px; display: inline; margin-left: 5px">Enable experimental logic</label>
             </div>
         </main>
         <footer>
-            <script
-                src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-                crossorigin="anonymous"
-            ></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
             <script type="module" src="optionsProc.js"></script>
         </footer>
     </body>
