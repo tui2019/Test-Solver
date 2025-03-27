@@ -1,9 +1,11 @@
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
 document.getElementById("APIKey").addEventListener("input", getAPIInput, true);
+document.getElementById("exp_logic_enable").addEventListener("change", saveExpLogicState, true);
 let APIKey_input = document.getElementById("APIKey");
 let inputStatus = document.getElementById("inpStatus");
 let infoText = document.getElementById("optionInfo");
+let expLogicCheckbox = document.getElementById("exp_logic_enable");
 
 async function getAPIInput()
 {
@@ -54,7 +56,10 @@ function obtainAPI(apiv)
 
 function preserveOptions()
 {
-
+    const expLogicEnabled = window.localStorage.getItem('expLogicEnabled');
+    if(expLogicEnabled !== null) {
+        expLogicCheckbox.checked = expLogicEnabled === 'true';
+    }
     const apiOption = window.localStorage.getItem('userGAPI');
     if(apiOption == null)
     {
@@ -68,6 +73,11 @@ function preserveOptions()
     infoText.setAttribute("class", "text-info");
     infoText.setAttribute("style", "font-size: 19px;")
     inputStatus.classList.replace("text-danger", "text-success");
+}
+
+function saveExpLogicState() {
+    window.localStorage.setItem('expLogicEnabled', expLogicCheckbox.checked);
+    browser.runtime.reload();
 }
 
 
