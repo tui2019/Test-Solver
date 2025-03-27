@@ -48,6 +48,7 @@ function obtainAPI(apiv)
 
     window.localStorage.setItem('userGAPI', apiv);
     preserveOptions();
+    browser.runtime.reload();
 }
 
 
