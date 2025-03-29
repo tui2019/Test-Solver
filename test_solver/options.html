@@ -54,6 +54,19 @@
                 color: rgba(255, 255, 255, 0.5); /* Placeholder color */
             }
 
+            #APIKey2 {
+                font-size: 22px;
+                background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
+                border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
+                color: rgb(150, 150, 150);
+                backdrop-filter: blur(3px);
+                -webkit-backdrop-filter: blur(3px);
+            }
+
+            #APIKey2::placeholder {
+                color: rgba(255, 255, 255, 0.5); /* Placeholder color */
+            }
+
             #optionInfo {
                 text-align: center;
             }
@@ -67,6 +80,15 @@
             }
 
             #inpStatus {
+                font-size: 22px;
+                background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
+                border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
+                color: white;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+
+            #inpStatus2 {
                 font-size: 22px;
                 background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
                 border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
@@ -103,7 +125,10 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background-color: #ccc;
+                background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
+                color: white;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 -webkit-transition: 0.4s;
                 transition: 0.4s;
             }
@@ -115,7 +140,7 @@
                 width: 26px;
                 left: 4px;
                 bottom: 4px;
-                background-color: white;
+                background-color: #d0f3ce;
                 -webkit-transition: 0.4s;
                 transition: 0.4s;
             }
@@ -154,12 +179,16 @@
         <header></header>
         <main class="main-content">
             <div class="input-group mb-3">
-                <input type="text" id="APIKey" class="form-control" placeholder="Your Gemini API" aria-describedby="inpStatus" />
+                <input type="text" id="APIKey" class="form-control" placeholder="API Key 1" aria-describedby="inpStatus" />
                 <span class="input-group-text material-icons text-danger" id="inpStatus"></span>
             </div>
+            <div class="input-group mb-3">
+                <input type="text" id="APIKey2" class="form-control" placeholder="API Key 2 (optional)" aria-describedby="inpStatus" />
+                <span class="input-group-text material-icons text-danger" id="inpStatus2"></span>
+            </div>
             <div id="optionInfo">
-                <a href="https://aistudio.google.com/apikey" class="text-info" style="font-size: 19px; display: inline">Get a Gemini API key here</a>
-                <p class="text-light" style="font-size: 19px; display: inline">Paste it in the input bar above and wait for a few seconds for it to be submitted.</p>
+                <a href="https://aistudio.google.com/apikey" class="text-info" style="font-size: 19px; display: inline">Get a Gemini API key here.</a>
+                <p class="text-light" style="font-size: 19px; display: inline">Providing 2 API keys increases your request limit.</p>
             </div>
             <div class="toggle-input mb3">
                 <label class="switch">
