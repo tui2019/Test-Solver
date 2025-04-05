@@ -2,7 +2,15 @@
 // https://ai.google.dev/gemini-api/docs/quickstart?lang=web
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 var genAI = new GoogleGenerativeAI(window.localStorage.getItem('userGAPI'));
-var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash", config: { tools: [{ googleSearch: {} }] } });
+if (window.localStorage.getItem('expLogicEnabled') === 'true'){
+  var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp-01-21" });
+  var api_limit = 10;
+}
+else{
+  var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  var api_limit = 15;
+}
+
 var multKeys = false;
 var key1requests = 0;
 var activeKey = 1;
@@ -10,7 +18,12 @@ if (window.localStorage.getItem('userGAPI2') !== null){
   multKeys = true;
   var key2requests = 0;
   var genAI2 = new GoogleGenerativeAI(window.localStorage.getItem('userGAPI2'));
-  var model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash", config: { tools: [{ googleSearch: {} }] } });
+  if (window.localStorage.getItem('expLogicEnabled') === 'true'){
+    var model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp-01-21" });
+  }
+  else{
+    var model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash" });
+  }
 }
 
 
@@ -26,7 +39,7 @@ function sendRequest(request) {
   if (multKeys) {
     if (activeKey == 1) {
       key1requests += 1;
-      if (key1requests > 15) {
+      if (key1requests > api_limit) {
         activeKey = 2;
         key1requests = 0;
       }
@@ -34,7 +47,7 @@ function sendRequest(request) {
     }
     else {
       key2requests += 1;
-      if (key2requests > 15) {
+      if (key2requests > api_limit) {
         activeKey = 1;
         key2requests = 0;
       }
@@ -45,8 +58,6 @@ function sendRequest(request) {
     return model.generateContent(request);
   }
 }
-
-if (window.localStorage.getItem('expLogicEnabled') === 'true'){
   async function get_answers(request, sender, sendResponse) {
     if (request.type == "text_question") {
       var prompt_str = "Дай відповідь (якщо можливо - одним словом): " + request.question;
@@ -117,69 +128,3 @@ if (window.localStorage.getItem('expLogicEnabled') === 'true'){
     }
 
   browser.runtime.onMessage.addListener(get_answers);
-}
-else {
-  async function get_answers(request, sender, sendResponse) {
-    if (request.type == "text_question") {
-      var prompt_str = "Дай відповідь (якщо можливо - одним словом): " + request.question;
-      var result = await sendRequest(prompt_str);
-      var responseText = await result.response.text();
-    }
-    else if (request.type == "single_choice_question") {
-      var answers_str = "";
-      for (var i = 0; i < request.answers.length; i++) {
-        if (i == 0) {
-          answers_str += "1.";
-        } else {
-          answers_str += `; ${i + 1}.`;
-        }
-        answers_str += request.answers[i];
-      }
-      var prompt_str = "Допоможи вирішити завдання та дай відповідь лише цифрою(1, 2, 3...): " + request.question + ". Варіанти відповідей: " + answers_str;
-      var result = await sendRequest(prompt_str);
-      var responseText = await result.response.text();
-    }
-
-    else if (request.type == "choice_grid") {
-      var answers_str = "";
-      for (var i = 0; i < request.answers.length; i++) {
-        if (i == 0) {
-          answers_str += "1.";
-        } else {
-          answers_str += `; ${i + 1}.`;
-        }
-        answers_str += request.answers[i];
-      }
-      var answers_horizontal_str = "";
-      for (var i = 0; i < request.answers_horizontal.length; i++) {
-        if (i == 0) {
-          answers_horizontal_str += "А.";
-        } else {
-          answers_horizontal_str += `; ${numberToLetter(i + 1)}.`;
-        }
-        answers_horizontal_str += request.answers_horizontal[i];
-      }
-      var prompt_str = "Допоможи вирішити завдання та дай відповідь в форматі (1А, 2Б, 3В...) без ніяких зайвих слів: " + request.question + ". Питання: " + answers_str + ". Варіанти відповідей: " + answers_horizontal_str;
-      var result = await sendRequest(prompt_str);
-      var responseText = await result.response.text();
-    }
-
-    else if (request.type == "multiple_choice_question") {
-    var answers_str = "";
-    for (var i = 0; i < request.answers.length; i++) {
-      if (i == 0) {
-        answers_str += "1.";
-      } else {
-        answers_str += `; ${i + 1}.`;
-      }
-      answers_str += request.answers[i];
-    }
-    var prompt_str = "Допоможи вирішити завдання та дай відповідь лише цифрою(1, 2, 3..., без жодних інших слів). Можливі декілька правильних відповідей: " + request.question + ". Варіанти відповідей: " + answers_str;
-    var result = await sendRequest(prompt_str);
-        var responseText = await result.response.text();
-    }
-      return responseText; // Indicate that sendResponse will be called asynchronously
-    }
-
-  browser.runtime.onMessage.addListener(get_answers);
-}
