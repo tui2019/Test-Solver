@@ -81,7 +81,7 @@ function sendRequest(request) {
       var responseText = await result.response.text();
     }
 
-    else if (request.type == "choice_grid") {
+    else if (request.type == "choice_grid" || request.type == "check_box_grid") {
       var answers_str = "";
       for (var i = 0; i < request.answers.length; i++) {
         if (i == 0) {
