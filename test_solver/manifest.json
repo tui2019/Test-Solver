@@ -21,6 +21,10 @@
     {
       "matches": ["*://*.classtime.com/*"],
       "js": ["solverClasstime.js"]
+    },
+    {
+      "matches": ["*://vseosvita.ua/*"],
+      "js": ["solverVseosvita.js"]
     }
   ],
   "background": {

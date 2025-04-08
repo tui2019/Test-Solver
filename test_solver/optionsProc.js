@@ -20,7 +20,7 @@ async function getAPIInput(inputId, statusId) {
 
     const avalue = APIKey_input.value;
     const tgenAI = new GoogleGenerativeAI(avalue);
-    const tmodel = tgenAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+    const tmodel = tgenAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     let test = null;
     try {
         test = await tmodel.generateContent("Test");
