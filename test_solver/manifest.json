@@ -28,10 +28,11 @@
     }
   ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["background.js", "languages.js"],
     "persistent": false,
     "type": "module"
   },
+  "web_accessible_resources": ["languages.js"],
   "options_ui": {
     "page": "options.html"
   },

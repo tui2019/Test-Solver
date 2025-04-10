@@ -23,7 +23,7 @@ function handleResponse(response) {
     else if (type=="choice_grid"){
       var responseArray = response.split(", ")
       for (var i = 0; i < responseArray.length; i++) {
-        var correct_answer = answers_HTML[i].children[LetterToNumber(responseArray[i][1])].getElementsByClassName("Od2TWd")[0];
+        var correct_answer = answers_HTML[i].children[responseArray[i]].getElementsByClassName("Od2TWd")[0];
         correct_answer.click();
       }
     }
@@ -31,7 +31,7 @@ function handleResponse(response) {
     else if (type=="check_box_grid"){
       var responseArray = response.split(", ")
       for (var i = 0; i < responseArray.length; i++) {
-        var correct_answer = answers_HTML[i].children[LetterToNumber(responseArray[i][1])].getElementsByClassName("q9ZqCb")[0];
+        var correct_answer = answers_HTML[i].children[responseArray[i]].getElementsByClassName("q9ZqCb")[0];
         correct_answer.click();
       }
     }
