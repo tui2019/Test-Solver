@@ -27,7 +27,7 @@ const translations = {
       "apiKeyPlaceholder2": "API Ключ 2 (необов'язково)",
       "getApiKey": "Отримати ключ Gemini API можна тут.",
       "apiKeyInfo": "Надання 2 API ключів збільшує ліміт ваших запитів.",
-      "enableExperimentalLogic": "Увімкнути експериментальну логіку",
+      "enableExperimentalLogic": "Експериментальна логіка",
       "languageSelector": "Мова"
     },
     "prompts": {
