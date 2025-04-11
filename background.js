@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+import { GoogleGenerativeAI } from "./geminiAPI.js";
 import translations from './languages.js';
 
 var genAI = new GoogleGenerativeAI(window.localStorage.getItem('userGAPI'));
