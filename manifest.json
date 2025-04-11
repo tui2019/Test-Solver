@@ -6,7 +6,8 @@
   "description": "This extension will solve the test for you.",
 
   "icons": {
-    "48": "icons/icon.png"
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png"
   },
 
   "content_scripts": [
