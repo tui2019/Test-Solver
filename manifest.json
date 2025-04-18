@@ -34,6 +34,12 @@
     "type": "module"
   },
 
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{401E25D9-3216-4662-9C14-A351FF8A5F46}"
+    }
+  },
+
   "web_accessible_resources": [
     {
       "resources": ["languages.js"],
