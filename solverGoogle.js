@@ -1,7 +1,7 @@
 function handleResponse(response) {
     if (type=="text_question"){
-    answers_HTML.value=response;
-    answers_HTML.dispatchEvent(new Event('input', { bubbles: true }));
+      answers_HTML.value=response;
+      answers_HTML.dispatchEvent(new Event('input', { bubbles: true }));
     }
     else if (type=="multiple_choice_question"){
       const responseArray = response.split(", ").map(Number);
@@ -92,13 +92,12 @@ for (var i = 0; i < questions.length; i++) {
       type="text_question";
       answers_HTML=this.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("AgroKb")[0].querySelectorAll('input, textarea')[0];
     }
-    const ansers_request = browser.runtime.sendMessage({
-      question: this.innerText,
-      answers: answers,
-      answers_horizontal: answers_horizontal,
-      type: type
-    });
-    ansers_request.then(handleResponse, handleError);
+    chrome.runtime.sendMessage({
+        question: this.innerText,
+        answers: answers,
+        answers_horizontal: answers_horizontal,
+        type: type
+    }, handleResponse);
 
   };
 };
