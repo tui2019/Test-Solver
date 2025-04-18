@@ -1,12 +1,3 @@
-function LetterToNumber(letter) {
-  const Alphabet_str = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
-  const index = Alphabet_str.indexOf(letter);
-  if (index === -1) {
-    return undefined;
-  }
-  return index + 1;
-}
-
 function handleResponse(response) {
     if (type=="text_question"){
     answers_HTML.value=response;
