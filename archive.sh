@@ -1,19 +1,62 @@
 #!/bin/bash
 
-# Check if a filename is provided as an argument
-if [ -z "$1" ]; then
-  echo "Usage: $0 <zip_filename>"
-  echo "Example: $0 my_archive.zip"
+# Exit immediately if a command exits with a non-zero status.
+set -e
+
+# Define common files and directories to include in the zip
+FILES_TO_ZIP="icons background.js bootstrap.min.css geminiAPI.js languages.js options.html optionsProc.js solverClasstime.js solverGoogle.js solverNaurok.js solverVseosvita.js"
+
+# Define source manifest locations
+CHROME_MANIFEST="chrome/manifest.json"
+FIREFOX_MANIFEST="firefox/manifest.json"
+
+# --- Extract Version Number ---
+VERSION=$(awk -F'"' '/"version":/ {print $4}' "$CHROME_MANIFEST")
+if [ -z "$VERSION" ]; then
+  echo "Error: Could not extract version number from $CHROME_MANIFEST"
   exit 1
 fi
+echo "Detected version: $VERSION"
+echo "-----------------------------"
 
-# Set the filename from the first argument
-ZIP_FILENAME="$1"
+# Define output directory (set to Desktop for macOS/Linux)
+OUTPUT_DIR="$HOME/Desktop"
+CHROME_ZIP_NAME="${OUTPUT_DIR}/Test-Solver-${VERSION}-Chrome.zip"
+FIREFOX_ZIP_NAME="${OUTPUT_DIR}/Test-Solver-${VERSION}-Firefox.zip"
 
-# Command 1: Create the zip archive with exclusions
-zip -r "$ZIP_FILENAME" . -x '**/.*' -x '.git*' -x '**/__MACOSX'
+# Check if Desktop directory exists, create if not (unlikely needed, but safe)
+mkdir -p "$OUTPUT_DIR"
 
-# Command 2: Delete .DS_Store from the zip archive
-zip -d "$ZIP_FILENAME" .DS_Store archive.sh
+# --- Package Chrome Extension ---
+echo "Packaging Chrome extension..."
+# 1. Copy the Chrome manifest
+cp "$CHROME_MANIFEST" manifest.json
+# 2. Create the initial zip archive
+zip -r "$CHROME_ZIP_NAME" manifest.json $FILES_TO_ZIP
+# 3. Remove the temporary manifest
+rm manifest.json
+# 4. Clean macOS specific files (.DS_Store, __MACOSX) from the archive
+echo "Cleaning $CHROME_ZIP_NAME..."
+zip -d "$CHROME_ZIP_NAME" '__MACOSX*' '*/.DS_Store' '.DS_Store' > /dev/null 2>&1 || true
+#    > /dev/null 2>&1 : Suppresses output (like "nothing deleted")
+#    || true : Prevents script exit if zip -d fails (e.g., files not found)
 
-echo "Zip archive '$ZIP_FILENAME' created."
+echo "Created and cleaned $CHROME_ZIP_NAME"
+echo "-----------------------------"
+
+# --- Package Firefox Extension ---
+echo "Packaging Firefox extension..."
+# 1. Copy the Firefox manifest
+cp "$FIREFOX_MANIFEST" manifest.json
+# 2. Create the initial zip archive
+zip -r "$FIREFOX_ZIP_NAME" manifest.json $FILES_TO_ZIP
+# 3. Remove the temporary manifest
+rm manifest.json
+# 4. Clean macOS specific files (.DS_Store, __MACOSX) from the archive
+echo "Cleaning $FIREFOX_ZIP_NAME..."
+zip -d "$FIREFOX_ZIP_NAME" '__MACOSX*' '*/.DS_Store' '.DS_Store' > /dev/null 2>&1 || true
+
+echo "Created and cleaned $FIREFOX_ZIP_NAME"
+echo "-----------------------------"
+
+echo "Packaging complete. Archives are on your Desktop ($OUTPUT_DIR)."

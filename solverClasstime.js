@@ -30,14 +30,12 @@ function attachEventListener() {
 
 
   mainContent.addEventListener("click", async function(event) {
-    const clickedTab = event.target.closest(".a4467d319288c09c67943532e2bcdf19");
-
+    const clickedTab = event.target.closest("._3e864da4cfc4b0de376587e37e8abb12");
     if (clickedTab) {
       // Wait a short time for the content to load fully after clicking the tab
       await new Promise(r => setTimeout(r, 300));
 
       var answerWrapper = document.getElementsByClassName("_8043fa3b8fc08be90f43195ad3158af5");
-
       if (answerWrapper && answerWrapper.length > 0) {
         answers_HTML = Array.from(answerWrapper[0].children).map(e => e.getElementsByClassName("MuiFormControlLabel-root")[0]);
         var answerContext = answers_HTML.map(e => e.innerText);
@@ -66,14 +64,11 @@ function attachEventListener() {
         // Set the appropriate question type
         type = isMultipleChoice ? "multiple_choice_question" : "single_choice_question";
 
-        // Send message with appropriate type
-        const answers_request = browser.runtime.sendMessage({
-          question: questionContext,
-          answers: answerContext,
-          type: type
-        });
-
-        answers_request.then(handleResponse, handleError);
+        chrome.runtime.sendMessage({
+            question: questionContext,
+            answers: answerContext,
+            type: type
+        }, handleResponse);
       }
     }
   });

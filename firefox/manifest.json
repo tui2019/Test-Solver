@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "Test Solver",
+  "version": "1.9.6",
+
+  "description": "This extension will solve the test for you.",
+
+  "icons": {
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.naurok.ua/test/testing/*", "*://*.naurok.com.ua/test/testing/*"],
+      "js": ["solverNaurok.js"]
+    },
+    {
+      "matches": ["*://*.docs.google.com/*"],
+      "js": ["solverGoogle.js"]
+    },
+    {
+      "matches": ["*://*.classtime.com/*"],
+      "js": ["solverClasstime.js"]
+    },
+    {
+      "matches": ["*://vseosvita.ua/*"],
+      "js": ["solverVseosvita.js"]
+    }
+  ],
+
+  "background": {
+    "scripts": ["background.js"],
+    "type": "module"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{a31cb9c3-713e-40de-ad2c-304ecf759012}"
+    }
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["languages.js"],
+      "matches": ["*://*.naurok.ua/*", "*://*.naurok.com.ua/*", "*://*.docs.google.com/*", "*://*.classtime.com/*", "*://vseosvita.ua/*"]
+    }
+  ],
+
+  "options_page": "options.html",
+
+  "action": {
+    "default_popup": "options.html"
+  },
+
+  "permissions": ["storage"]
+}

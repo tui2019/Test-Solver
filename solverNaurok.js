@@ -26,12 +26,13 @@ question_tab.addEventListener("click", async ()=>
     var questionContext = questionWrapper[0].children[0].innerText;
     answers_HTML = Array.from(anwserWrapper[0].children).map(e => e.getElementsByClassName("question-option-inner-content")[0]);
     var anwserContext = answers_HTML.map(e => e.innerText);
-    const ansers_request = browser.runtime.sendMessage({
-      question: questionContext,
-      answers: anwserContext,
-      type: "single_choice_question"
-    });
-    ansers_request.then(handleResponse, handleError);
+
+    chrome.runtime.sendMessage({
+        question: questionContext,
+        answers: anwserContext,
+        type: "single_choice_question"
+    }, handleResponse);
+
     await new Promise(t => setTimeout(t, 2000));
   }
 )

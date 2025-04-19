@@ -40,10 +40,10 @@ function applyLanguage(langCode) {
     }
 }
 
-function saveLanguageState() {
-    window.localStorage.setItem('userLanguage', languageSelect.value);
+async function saveLanguageState() {
+    await chrome.storage.local.set({ 'userLanguage': languageSelect.value });
     applyLanguage(languageSelect.value);
-    browser.runtime.reload();
+    chrome.runtime.reload();
 }
 
 async function getAPIInput(inputId, statusId) {
@@ -76,68 +76,71 @@ function showError(statusElement) {
     }
 }
 
-function obtainAPI(apiv, inputId) {
+async function obtainAPI(apiv, inputId) {
     // Store the API key in the appropriate slot
     if (inputId === "APIKey") {
-        window.localStorage.setItem('userGAPI', apiv);
+        await chrome.storage.local.set({ 'userGAPI': apiv });
     } else {
         // If the first API key isn't set, also set it with this value
-      if (!window.localStorage.getItem('userGAPI')) {
-        window.localStorage.setItem('userGAPI', apiv);
-      }
-      else {
-        window.localStorage.setItem('userGAPI2', apiv);
-      }
+        const result = await chrome.storage.local.get('userGAPI');
+        if (!result.userGAPI) {
+            await chrome.storage.local.set({ 'userGAPI': apiv });
+        } else {
+            await chrome.storage.local.set({ 'userGAPI2': apiv });
+        }
     }
 
     preserveOptions();
-    browser.runtime.reload();
+    chrome.runtime.reload();
 }
 
-function saveExpLogicState() {
-    window.localStorage.setItem('expLogicEnabled', expLogicCheckbox.checked);
-    browser.runtime.reload();
+async function saveExpLogicState() {
+    await chrome.storage.local.set({ 'expLogicEnabled': expLogicCheckbox.checked });
+    chrome.runtime.reload();
 }
 
-function preserveOptions() {
-    // Handle language selection
-    const savedLanguage = window.localStorage.getItem('userLanguage') || 'en';
-    languageSelect.value = savedLanguage;
-    applyLanguage(savedLanguage);
+async function preserveOptions() {
+    try {
+        // Handle language selection
+        const { userLanguage = 'en' } = await chrome.storage.local.get('userLanguage');
+        languageSelect.value = userLanguage;
+        applyLanguage(userLanguage);
 
-    // Handle experimental logic checkbox
-    const expLogicEnabled = window.localStorage.getItem('expLogicEnabled');
-    if(expLogicEnabled !== null) {
-        expLogicCheckbox.checked = expLogicEnabled === 'true';
-    }
+        // Handle experimental logic checkbox
+        const { expLogicEnabled } = await chrome.storage.local.get('expLogicEnabled');
+        if(expLogicEnabled !== undefined) {
+            expLogicCheckbox.checked = expLogicEnabled;
+        }
 
-    // Handle first API key
-    const apiOption = window.localStorage.getItem('userGAPI');
-    if(apiOption !== null) {
-        const APIKey_input = document.getElementById("APIKey");
-        // Preserve the translated placeholder
-        const currentLang = translations[languageSelect.value] || translations['en'];
-        APIKey_input.setAttribute("placeholder", apiOption);
-        APIKey_input.setAttribute("disabled", true);
-        inputStatus.innerHTML = "check_circle";
-        inputStatus.classList.replace("text-danger", "text-success");
-    }
+        // Handle first API key
+        const { userGAPI } = await chrome.storage.local.get('userGAPI');
+        if(userGAPI !== undefined) {
+            const APIKey_input = document.getElementById("APIKey");
+            // Preserve the translated placeholder
+            const currentLang = translations[languageSelect.value] || translations['en'];
+            APIKey_input.setAttribute("placeholder", userGAPI);
+            APIKey_input.setAttribute("disabled", true);
+            inputStatus.innerHTML = "check_circle";
+            inputStatus.classList.replace("text-danger", "text-success");
+        }
 
-    // Handle second API key
-    const apiOption2 = window.localStorage.getItem('userGAPI2');
-    if(apiOption2 !== null) {
-        const APIKey_input2 = document.getElementById("APIKey2");
-        APIKey_input2.setAttribute("placeholder", apiOption2);
-        APIKey_input2.setAttribute("disabled", true);
-        inputStatus2.innerHTML = "check_circle";
-        inputStatus2.classList.replace("text-danger", "text-success");
-    }
+        // Handle second API key
+        const { userGAPI2 } = await chrome.storage.local.get('userGAPI2');
+        if(userGAPI2 !== undefined) {
+            const APIKey_input2 = document.getElementById("APIKey2");
+            APIKey_input2.setAttribute("placeholder", userGAPI2);
+            APIKey_input2.setAttribute("disabled", true);
+            inputStatus2.innerHTML = "check_circle";
+            inputStatus2.classList.replace("text-danger", "text-success");
+        }
 
-    // Update info text if no API keys are set
-    if(apiOption === null && apiOption2 === null) {
-        // Clear local storage if no API keys are set
-        window.localStorage.removeItem('userGAPI');
-        window.localStorage.removeItem('userGAPI2');
+        // Update info text if no API keys are set
+        if(userGAPI === undefined && userGAPI2 === undefined) {
+            // Clear storage if no API keys are set
+            await chrome.storage.local.remove(['userGAPI', 'userGAPI2']);
+        }
+    } catch (error) {
+        console.error("Error preserving options:", error);
     }
 }
 

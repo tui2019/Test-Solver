@@ -1,35 +1,43 @@
 import { GoogleGenerativeAI } from "./geminiAPI.js";
 import translations from './languages.js';
 
-var genAI = new GoogleGenerativeAI(window.localStorage.getItem('userGAPI'));
-if (window.localStorage.getItem('expLogicEnabled') === 'true'){
-  var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp-01-21" });
-  var api_limit = 10;
-}
-else{
-  var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-  var api_limit = 15;
+let genAI, model, api_limit;
+let multKeys = false;
+let key1requests = 0;
+let activeKey = 1;
+let genAI2, model2, key2requests = 0;
+let userLanguage, lang, prompts;
+
+async function initializeAPI() {
+  genAI = new GoogleGenerativeAI(await chrome.storage.local.get('userGAPI').then(result => result.userGAPI));
+  if (await chrome.storage.local.get('expLogicEnabled').then(result => result.expLogicEnabled) === 'true') {
+    model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp-01-21" });
+    api_limit = 10;
+  }
+  else {
+    model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    api_limit = 15;
+  }
+
+  multKeys = false;
+  key1requests = 0;
+  activeKey = 1;
+  if (await chrome.storage.local.get('userGAPI2').then(result => result.userGAPI2)) {
+    multKeys = true;
+    key2requests = 0;
+    genAI2 = new GoogleGenerativeAI(await chrome.storage.local.get('userGAPI2').then(result => result.userGAPI2));
+    if (await chrome.storage.local.get('expLogicEnabled').then(result => result.expLogicEnabled) === 'true') {
+      model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp-01-21" });
+    }
+    else {
+      model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash" });
+    }
+  }
+  userLanguage = await chrome.storage.local.get('userLanguage').then(result => result.userLanguage) || 'uk'; // Default to Ukrainian for backward compatibility
+  lang = translations[userLanguage] || translations['uk'];
+  prompts = lang.prompts;
 }
 
-var multKeys = false;
-var key1requests = 0;
-var activeKey = 1;
-if (window.localStorage.getItem('userGAPI2') !== null){
-  multKeys = true;
-  var key2requests = 0;
-  var genAI2 = new GoogleGenerativeAI(window.localStorage.getItem('userGAPI2'));
-  if (window.localStorage.getItem('expLogicEnabled') === 'true'){
-    var model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp-01-21" });
-  }
-  else{
-    var model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash" });
-  }
-}
-
-// Get user language or default to English
-const userLanguage = window.localStorage.getItem('userLanguage') || 'uk'; // Default to Ukrainian for backward compatibility
-const lang = translations[userLanguage] || translations['uk'];
-const prompts = lang.prompts;
 
 function numberToLetter(number) {
   const alphabet = lang.alphabet;
@@ -95,6 +103,9 @@ function sendRequest(request) {
 }
 
 async function get_answers(request, sender, sendResponse) {
+  if (!genAI) {
+    initializeAPI()
+  }
   if (request.type == "text_question") {
     var prompt_str = prompts.giveAnswer + request.question;
     var result = await sendRequest(prompt_str);
@@ -154,7 +165,27 @@ async function get_answers(request, sender, sendResponse) {
     var result = await sendRequest(prompt_str);
     var responseText = await result.response.text();
   }
-  return responseText; // Indicate that sendResponse will be called asynchronously
+
+    return responseText;
 }
 
-browser.runtime.onMessage.addListener(get_answers);
+chrome.runtime.onInstalled.addListener(() => {
+  initializeAPI();
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  initializeAPI();
+});
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  get_answers(request)
+    .then(response => {
+      sendResponse(response);
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      sendResponse("Error: " + error.message);
+    });
+
+  return true; // Indicates we'll call sendResponse asynchronously
+});
