@@ -11,7 +11,7 @@ let userLanguage, lang, prompts;
 async function initializeAPI() {
   genAI = new GoogleGenerativeAI(await chrome.storage.local.get('userGAPI').then(result => result.userGAPI));
   if (await chrome.storage.local.get('expLogicEnabled').then(result => result.expLogicEnabled) === 'true') {
-    model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp-01-21" });
+    model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-04-17" });
     api_limit = 10;
   }
   else {
@@ -27,7 +27,7 @@ async function initializeAPI() {
     key2requests = 0;
     genAI2 = new GoogleGenerativeAI(await chrome.storage.local.get('userGAPI2').then(result => result.userGAPI2));
     if (await chrome.storage.local.get('expLogicEnabled').then(result => result.expLogicEnabled) === 'true') {
-      model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp-01-21" });
+      model2 = genAI2.getGenerativeModel({ model: "gemini-2.5-flash-preview-04-17" });
     }
     else {
       model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash" });

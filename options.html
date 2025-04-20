@@ -7,8 +7,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <link href="bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
         <style>
+            html {
+                width: fit-content;
+            }
             body {
-                min-width: 700px;
                 background: black;
                 background-image: linear-gradient(rgba(208, 243, 204, 0.2) 0.1em, transparent 0.1em), linear-gradient(90deg, rgba(208, 243, 204, 0.2) 0.1em, transparent 0.1em);
                 background-size: 3em 3em;
@@ -19,6 +21,7 @@
                 margin: 0;
                 padding: 20px;
                 font-family: sans-serif;
+                width: fit-content;
             }
 
             .main-content {
@@ -190,6 +193,12 @@
                 justify-content: center;
                 align-items: center;
             }
+            #switchHolder {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-right: 10px;
+            }
         </style>
     </head>
     <body>
@@ -217,10 +226,12 @@
                 </select>
             </div>
             <div class="toggle-input mb3">
-                <label class="switch">
-                    <input type="checkbox" id="exp_logic_enable" />
-                    <span class="slider round"></span>
-                </label>
+                <div id="switchHolder">
+                    <label class="switch">
+                        <input type="checkbox" id="exp_logic_enable" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
                 <label class="text-light" style="font-size: 19px; display: inline; margin-left: 5px">Enable experimental logic</label>
             </div>
         </main>
