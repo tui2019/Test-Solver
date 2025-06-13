@@ -62,6 +62,7 @@ sh archive.sh
 2. Navigate to the test page you want to solve.
 3. Click the extension icon to activate.
 4. Follow the on-screen instructions.
+5. To get the answer, press on a question title.
 
 ## Contributing
 
