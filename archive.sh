@@ -38,6 +38,9 @@ rm manifest.json
 # 4. Clean macOS specific files (.DS_Store, __MACOSX) from the archive
 echo "Cleaning $CHROME_ZIP_NAME..."
 zip -d "$CHROME_ZIP_NAME" '__MACOSX*' '*/.DS_Store' '.DS_Store' > /dev/null 2>&1 || true
+# 5. Remove LICENSE and README.md from the archive
+echo "Removing LICENSE and README.md from $CHROME_ZIP_NAME..."
+zip -d "$CHROME_ZIP_NAME" 'LICENSE' 'README.md' > /dev/null 2>&1 || true
 #    > /dev/null 2>&1 : Suppresses output (like "nothing deleted")
 #    || true : Prevents script exit if zip -d fails (e.g., files not found)
 
@@ -55,6 +58,9 @@ rm manifest.json
 # 4. Clean macOS specific files (.DS_Store, __MACOSX) from the archive
 echo "Cleaning $FIREFOX_ZIP_NAME..."
 zip -d "$FIREFOX_ZIP_NAME" '__MACOSX*' '*/.DS_Store' '.DS_Store' > /dev/null 2>&1 || true
+# 5. Remove LICENSE and README.md from the archive
+echo "Removing LICENSE and README.md from $FIREFOX_ZIP_NAME..."
+zip -d "$FIREFOX_ZIP_NAME" 'LICENSE' 'README.md' > /dev/null 2>&1 || true
 
 echo "Created and cleaned $FIREFOX_ZIP_NAME"
 echo "-----------------------------"
