@@ -11,12 +11,12 @@ let userLanguage, lang, prompts;
 async function initializeAPI() {
   genAI = new GoogleGenerativeAI(await chrome.storage.local.get('userGAPI').then(result => result.userGAPI));
   if (await chrome.storage.local.get('expLogicEnabled').then(result => result.expLogicEnabled) === 'true') {
-    model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-04-17" });
-    api_limit = 10;
+    model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+    api_limit = 5; // Limit set to 5 because of weird behavior with more requests. Google stopped publishing details on how many requests are allowed.
   }
   else {
-    model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    api_limit = 15;
+    model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+    api_limit = 5;
   }
 
   multKeys = false;
