@@ -5,7 +5,6 @@ function handleResponse(response) {
   var correct_answer = answers_HTML[response-1];
   correct_answer.style.opacity = "0";
   delay(1000).then(() => correct_answer.style.opacity = "1");
-
 }
 
 function handleError(error) {

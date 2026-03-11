@@ -4,7 +4,7 @@
 set -e
 
 # Define common files and directories to include in the zip
-FILES_TO_ZIP="icons background.js bootstrap.min.css geminiAPI.js languages.js options.html optionsProc.js solverClasstime.js solverGoogle.js solverNaurok.js solverVseosvita.js"
+FILES_TO_ZIP="icons background.js bootstrap.min.css geminiAPI.js options.html optionsProc.js solverClasstime.js solverGoogle.js solverNaurok.js solverVseosvita.js"
 
 # Define source manifest locations
 CHROME_MANIFEST="chrome/manifest.json"

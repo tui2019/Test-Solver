@@ -66,14 +66,6 @@
                 backdrop-filter: blur(3px);
                 -webkit-backdrop-filter: blur(3px);
             }
-            #languageSelect {
-                font-size: 22px;
-                background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
-                border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
-                color: rgb(150, 150, 150);
-                backdrop-filter: blur(3px);
-                -webkit-backdrop-filter: blur(3px);
-            }
 
             #APIKey2::placeholder {
                 color: rgba(255, 255, 255, 0.5); /* Placeholder color */
@@ -108,96 +100,28 @@
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
             }
-            #lang-icon {
-                font-size: 22px;
-                background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
-                border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
-                color: white;
+
+            #clearKeys {
+                margin-top: 20px;
+                font-size: 16px;
+                background-color: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: #d0f3ce;
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
+                padding: 8px 20px;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background-color 0.2s;
             }
-            #lang-icon span {
-                color: rgb(150, 150, 150);
+
+            #clearKeys:hover {
+                background-color: rgba(255, 255, 255, 0.2);
             }
 
             footer {
                 text-align: center;
                 padding-top: 20px;
-            }
-
-            /* The switch - the box around the slider */
-            .switch {
-                position: relative;
-                display: block;
-                width: 60px;
-                height: 34px;
-            }
-
-            /* Hide default HTML checkbox */
-            .switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-
-            /* The slider */
-            .slider {
-                position: absolute;
-                box-shadow: 0 0 1px #d0f3ce;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
-                color: white;
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                -webkit-transition: 0.4s;
-                transition: 0.4s;
-            }
-
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 26px;
-                width: 26px;
-                left: 4px;
-                bottom: 4px;
-                background-color: #d0f3ce;
-                -webkit-transition: 0.4s;
-                transition: 0.4s;
-            }
-
-            input:checked + .slider {
-                background-color: #158757;
-            }
-
-            input:checked + .slider:before {
-                -webkit-transform: translateX(26px);
-                -ms-transform: translateX(26px);
-                transform: translateX(26px);
-            }
-
-            /* Rounded sliders */
-            .slider.round {
-                border-radius: 34px;
-            }
-
-            .slider.round:before {
-                border-radius: 50%;
-            }
-            .toggle-input {
-                display: flex;
-                margin-top: 30px;
-                justify-content: center;
-                align-items: center;
-            }
-            #switchHolder {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-right: 10px;
             }
         </style>
     </head>
@@ -216,24 +140,7 @@
                 <a href="https://aistudio.google.com/apikey" class="text-info" style="font-size: 19px; display: inline">Get a Gemini API key here.</a>
                 <p class="text-light" style="font-size: 19px; display: inline">Providing 2 API keys increases your request limit.</p>
             </div>
-            <div class="input-group mt-3">
-                <label id="lang-icon" class="input-group-text" for="languageSelect">
-                    <span class="material-icons">language</span>
-                </label>
-                <select class="form-select" id="languageSelect">
-                    <option value="en">English</option>
-                    <option value="uk">Українська</option>
-                </select>
-            </div>
-            <div class="toggle-input mb3">
-                <div id="switchHolder">
-                    <label class="switch">
-                        <input type="checkbox" id="exp_logic_enable" />
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <label class="text-light" style="font-size: 19px; display: inline; margin-left: 5px">Enable experimental logic</label>
-            </div>
+            <button id="clearKeys">Clear Keys</button>
         </main>
         <footer>
             <script type="module" src="optionsProc.js"></script>

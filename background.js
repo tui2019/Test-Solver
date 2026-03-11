@@ -1,46 +1,41 @@
 import { GoogleGenerativeAI } from "./geminiAPI.js";
-import translations from './languages.js';
 
 let genAI, model, api_limit;
 let multKeys = false;
 let key1requests = 0;
 let activeKey = 1;
 let genAI2, model2, key2requests = 0;
-let userLanguage, lang, prompts;
+
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const prompts = {
+  giveAnswer: "Give an answer (if possible - in one word): ",
+  solveProblemNumberOnly: "Help solve this problem and give the answer only as a number (1, 2, 3...): ",
+  answerOptions: "Answer options: ",
+  solveProblemFormat: "Help solve this problem and give the answer in format (1A, 2B, 3C...) without any extra words: ",
+  questions: "Questions: ",
+  solveProblemMultiple: "Help solve this problem and give the answer only as a number (1, 2, 3..., without any other words). Multiple correct answers are possible: "
+};
 
 async function initializeAPI() {
-  genAI = new GoogleGenerativeAI(await chrome.storage.local.get('userGAPI').then(result => result.userGAPI));
-  if (await chrome.storage.local.get('expLogicEnabled').then(result => result.expLogicEnabled) === 'true') {
-    model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
-    api_limit = 5; // Limit set to 5 because of weird behavior with more requests. Google stopped publishing details on how many requests are allowed.
-  }
-  else {
-    model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-    api_limit = 5;
-  }
+  const key1 = await chrome.storage.local.get('userGAPI').then(result => result.userGAPI);
+  genAI = new GoogleGenerativeAI(key1);
+  model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+  api_limit = 5;
 
   multKeys = false;
   key1requests = 0;
   activeKey = 1;
-  if (await chrome.storage.local.get('userGAPI2').then(result => result.userGAPI2)) {
+  const key2 = await chrome.storage.local.get('userGAPI2').then(result => result.userGAPI2);
+  if (key2) {
     multKeys = true;
     key2requests = 0;
-    genAI2 = new GoogleGenerativeAI(await chrome.storage.local.get('userGAPI2').then(result => result.userGAPI2));
-    if (await chrome.storage.local.get('expLogicEnabled').then(result => result.expLogicEnabled) === 'true') {
-      model2 = genAI2.getGenerativeModel({ model: "gemini-2.5-flash-preview-04-17" });
-    }
-    else {
-      model2 = genAI2.getGenerativeModel({ model: "gemini-2.0-flash" });
-    }
+    genAI2 = new GoogleGenerativeAI(key2);
+    model2 = genAI2.getGenerativeModel({ model: "gemini-flash-latest" });
   }
-  userLanguage = await chrome.storage.local.get('userLanguage').then(result => result.userLanguage) || 'uk'; // Default to Ukrainian for backward compatibility
-  lang = translations[userLanguage] || translations['uk'];
-  prompts = lang.prompts;
 }
 
 
 function numberToLetter(number) {
-  const alphabet = lang.alphabet;
   if (number < 1 || number > alphabet.length) {
     return undefined; // Or throw an error
   }
@@ -48,16 +43,9 @@ function numberToLetter(number) {
 }
 
 function letterToNumber(letter) {
-  const alphabet = lang.alphabet;
   const index = alphabet.indexOf(letter);
   if (index === -1) {
-    // Try with English alphabet as fallback
-    const engAlphabet = translations['en'].alphabet;
-    const engIndex = engAlphabet.indexOf(letter);
-    if (engIndex === -1) {
-      return undefined;
-    }
-    return engIndex + 1;
+    return undefined;
   }
   return index + 1;
 }
@@ -78,7 +66,7 @@ function convertGridAnswerToNumeric(answer) {
   return numbers.join(", ");
 }
 
-function sendRequest(request) {
+async function sendRequest(request) {
   if (multKeys) {
     if (activeKey == 1) {
       key1requests += 1;
@@ -104,7 +92,7 @@ function sendRequest(request) {
 
 async function get_answers(request, sender, sendResponse) {
   if (!genAI) {
-    initializeAPI()
+    await initializeAPI();
   }
   if (request.type == "text_question") {
     var prompt_str = prompts.giveAnswer + request.question;
@@ -144,11 +132,9 @@ async function get_answers(request, sender, sendResponse) {
       }
       answers_horizontal_str += request.answers_horizontal[i];
     }
-    const connector = lang.connectors.and;
-    var prompt_str = prompts.solveProblemFormat + request.question + ". " + prompts.questions + answers_str + connector + prompts.answerOptions + answers_horizontal_str;
+    var prompt_str = prompts.solveProblemFormat + request.question + ". " + prompts.questions + answers_str + " and " + prompts.answerOptions + answers_horizontal_str;
     var result = await sendRequest(prompt_str);
     var responseText = await result.response.text();
-
     var responseText = convertGridAnswerToNumeric(responseText);
   }
   else if (request.type == "multiple_choice_question") {
@@ -166,15 +152,15 @@ async function get_answers(request, sender, sendResponse) {
     var responseText = await result.response.text();
   }
 
-    return responseText;
+  return responseText;
 }
 
-chrome.runtime.onInstalled.addListener(() => {
-  initializeAPI();
+chrome.runtime.onInstalled.addListener(async () => {
+  await initializeAPI();
 });
 
-chrome.runtime.onStartup.addListener(() => {
-  initializeAPI();
+chrome.runtime.onStartup.addListener(async () => {
+  await initializeAPI();
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {

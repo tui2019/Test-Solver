@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Test Solver",
-  "version": "1.9.8",
+  "version": "1.9.9",
 
   "description": "This extension will solve the test for you.",
 
@@ -12,19 +12,19 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.naurok.ua/test/testing/*", "*://*.naurok.com.ua/test/testing/*"],
+      "matches": ["*://*.naurok.ua/test/testing/*", "*://naurok.ua/test/testing/*", "*://*.naurok.com.ua/test/testing/*", "*://naurok.com.ua/test/testing/*"],
       "js": ["solverNaurok.js"]
     },
     {
-      "matches": ["*://*.docs.google.com/*"],
+      "matches": ["*://*.docs.google.com/*", "*://docs.google.com/*"],
       "js": ["solverGoogle.js"]
     },
     {
-      "matches": ["*://*.classtime.com/*"],
+      "matches": ["*://*.classtime.com/*", "*://classtime.com/*"],
       "js": ["solverClasstime.js"]
     },
     {
-      "matches": ["*://vseosvita.ua/*"],
+      "matches": ["*://vseosvita.ua/*", "*://*.vseosvita.ua/*"],
       "js": ["solverVseosvita.js"]
     }
   ],
@@ -33,19 +33,6 @@
     "service_worker": "background.js",
     "type": "module"
   },
-
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "{a31cb9c3-713e-40de-ad2c-304ecf759012}"
-    }
-  },
-
-  "web_accessible_resources": [
-    {
-      "resources": ["languages.js"],
-      "matches": ["*://*.naurok.ua/*", "*://*.naurok.com.ua/*", "*://*.docs.google.com/*", "*://*.classtime.com/*", "*://vseosvita.ua/*"]
-    }
-  ],
 
   "options_page": "options.html",
 

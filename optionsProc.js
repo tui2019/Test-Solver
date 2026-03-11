@@ -1,50 +1,12 @@
-import translations from './languages.js';
 import { GoogleGenerativeAI } from "./geminiAPI.js";
 
 document.getElementById("APIKey").addEventListener("input", () => getAPIInput("APIKey", "inpStatus"), true);
 document.getElementById("APIKey2").addEventListener("input", () => getAPIInput("APIKey2", "inpStatus2"), true);
-document.getElementById("exp_logic_enable").addEventListener("change", saveExpLogicState, true);
-document.getElementById("languageSelect").addEventListener("change", saveLanguageState, true);
+document.getElementById("clearKeys").addEventListener("click", clearKeys, true);
 
 let inputStatus = document.getElementById("inpStatus");
 let inputStatus2 = document.getElementById("inpStatus2");
 let infoText = document.getElementById("optionInfo");
-let expLogicCheckbox = document.getElementById("exp_logic_enable");
-let languageSelect = document.getElementById("languageSelect");
-
-// Load and apply selected language
-function applyLanguage(langCode) {
-    if (!translations[langCode]) {
-        langCode = 'en'; // Fallback to English
-    }
-
-    const lang = translations[langCode];
-
-    // Update placeholders and text content
-    document.getElementById("APIKey").setAttribute("placeholder", lang.settings.apiKeyPlaceholder1);
-    document.getElementById("APIKey2").setAttribute("placeholder", lang.settings.apiKeyPlaceholder2);
-
-    const apiLink = document.querySelector("#optionInfo a.text-info");
-    const apiInfo = document.querySelector("#optionInfo p.text-light");
-    if (apiLink) {
-        apiLink.textContent = lang.settings.getApiKey;
-    }
-    if (apiInfo) {
-        apiInfo.textContent = lang.settings.apiKeyInfo;
-    }
-
-    // Update experimental logic label
-    const expLogicLabel = document.querySelector(".toggle-input label.text-light");
-    if (expLogicLabel) {
-        expLogicLabel.textContent = lang.settings.enableExperimentalLogic;
-    }
-}
-
-async function saveLanguageState() {
-    await chrome.storage.local.set({ 'userLanguage': languageSelect.value });
-    applyLanguage(languageSelect.value);
-    chrome.runtime.reload();
-}
 
 async function getAPIInput(inputId, statusId) {
     const APIKey_input = document.getElementById(inputId);
@@ -57,7 +19,7 @@ async function getAPIInput(inputId, statusId) {
 
     const avalue = APIKey_input.value;
     const tgenAI = new GoogleGenerativeAI(avalue);
-    const tmodel = tgenAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const tmodel = tgenAI.getGenerativeModel({ model: "gemini-flash-latest" });
     let test = null;
     try {
         test = await tmodel.generateContent("Test");
@@ -66,7 +28,7 @@ async function getAPIInput(inputId, statusId) {
         showError(statusElement);
         return;
     }
-    obtainAPI(avalue, inputId);
+    await obtainAPI(avalue, inputId);
 }
 
 function showError(statusElement) {
@@ -94,30 +56,32 @@ async function obtainAPI(apiv, inputId) {
     chrome.runtime.reload();
 }
 
-async function saveExpLogicState() {
-    await chrome.storage.local.set({ 'expLogicEnabled': expLogicCheckbox.checked });
+async function clearKeys() {
+    await chrome.storage.local.remove(['userGAPI', 'userGAPI2']);
+
+    const APIKey_input = document.getElementById("APIKey");
+    APIKey_input.removeAttribute("disabled");
+    APIKey_input.setAttribute("placeholder", "API Key 1");
+    APIKey_input.value = "";
+    inputStatus.innerHTML = "";
+    inputStatus.classList.replace("text-success", "text-danger");
+
+    const APIKey_input2 = document.getElementById("APIKey2");
+    APIKey_input2.removeAttribute("disabled");
+    APIKey_input2.setAttribute("placeholder", "API Key 2 (optional)");
+    APIKey_input2.value = "";
+    inputStatus2.innerHTML = "";
+    inputStatus2.classList.replace("text-success", "text-danger");
+
     chrome.runtime.reload();
 }
 
 async function preserveOptions() {
     try {
-        // Handle language selection
-        const { userLanguage = 'en' } = await chrome.storage.local.get('userLanguage');
-        languageSelect.value = userLanguage;
-        applyLanguage(userLanguage);
-
-        // Handle experimental logic checkbox
-        const { expLogicEnabled } = await chrome.storage.local.get('expLogicEnabled');
-        if(expLogicEnabled !== undefined) {
-            expLogicCheckbox.checked = expLogicEnabled;
-        }
-
         // Handle first API key
         const { userGAPI } = await chrome.storage.local.get('userGAPI');
         if(userGAPI !== undefined) {
             const APIKey_input = document.getElementById("APIKey");
-            // Preserve the translated placeholder
-            const currentLang = translations[languageSelect.value] || translations['en'];
             APIKey_input.setAttribute("placeholder", userGAPI);
             APIKey_input.setAttribute("disabled", true);
             inputStatus.innerHTML = "check_circle";

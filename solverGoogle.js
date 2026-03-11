@@ -1,3 +1,5 @@
+
+
 function handleResponse(response) {
     if (type=="text_question"){
       answers_HTML.value=response;
@@ -5,30 +7,37 @@ function handleResponse(response) {
     }
     else if (type=="multiple_choice_question"){
       const responseArray = response.split(", ").map(Number);
+
       for (let i=0; i<responseArray.length;i++){
         var correct_answer = answers_HTML[responseArray[i]-1];
+        if (!correct_answer) { continue; }
         correct_answer.click();
       }
     }
 
     else if (type=="choice_grid"){
       var responseArray = response.split(", ")
+
       for (var i = 0; i < responseArray.length; i++) {
         var correct_answer = answers_HTML[i].children[responseArray[i]].getElementsByClassName("Od2TWd")[0];
+        if (!correct_answer) { continue; }
         correct_answer.click();
       }
     }
 
     else if (type=="check_box_grid"){
       var responseArray = response.split(", ")
+
       for (var i = 0; i < responseArray.length; i++) {
         var correct_answer = answers_HTML[i].children[responseArray[i]].getElementsByClassName("q9ZqCb")[0];
+        if (!correct_answer) { continue; }
         correct_answer.click();
       }
     }
 
     else if (type=="single_choice_question"){
       var correct_answer = answers_HTML[response-1];
+      if (!correct_answer) { return; }
       correct_answer.click();
     }
 }
