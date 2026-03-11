@@ -19,7 +19,7 @@ const prompts = {
 async function initializeAPI() {
   const key1 = await chrome.storage.local.get('userGAPI').then(result => result.userGAPI);
   genAI = new GoogleGenerativeAI(key1);
-  model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+  model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite-preview" });
   api_limit = 5;
 
   multKeys = false;
@@ -30,7 +30,7 @@ async function initializeAPI() {
     multKeys = true;
     key2requests = 0;
     genAI2 = new GoogleGenerativeAI(key2);
-    model2 = genAI2.getGenerativeModel({ model: "gemini-flash-latest" });
+    model2 = genAI2.getGenerativeModel({ model: "gemini-3.1-flash-lite-preview" });
   }
 }
 
